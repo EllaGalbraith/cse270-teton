@@ -10,6 +10,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options  # Add this import
+import os
 
 class TestDefaultSuite():
     def setup_method(self, method):
@@ -22,81 +23,142 @@ class TestDefaultSuite():
     def teardown_method(self, method):
         self.driver.quit()
 
+    def take_screenshot(self, test_name):
+        # Create screenshots folder if not exists
+        if not os.path.exists('screenshots'):
+            os.makedirs('screenshots')
+        screenshot_path = f'screenshots/{test_name}.png'
+        self.driver.save_screenshot(screenshot_path)
+        print(f"Screenshot saved to {screenshot_path}")
+        return screenshot_path
+
     def test_1aSiteLogo(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
-        elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/div[1]/div[1]/a/img")))
-        assert len(elements) > 0
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
+            elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/div[1]/div[1]/a/img")))
+            assert len(elements) > 0
+        except Exception as e:
+            self.take_screenshot("test_1aSiteLogo")
+            raise e
 
     def test_1bbrowsertabtitle(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
-        assert self.driver.title == "Teton Idaho CoC"
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
+            assert self.driver.title == "Teton Idaho CoC"
+        except Exception as e:
+            self.take_screenshot("test_1bbrowsertabtitle")
+            raise e
 
     def test_1cwebsiteheading(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
-        heading1 = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/header/div[1]/div[2]/h1"))).text
-        heading2 = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/header/div[1]/div[2]/h2"))).text
-        assert heading1 == "Teton Idaho"
-        assert heading2 == "Chamber of Commerce"
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
+            heading1 = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/header/div[1]/div[2]/h1"))).text
+            heading2 = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/header/div[1]/div[2]/h2"))).text
+            assert heading1 == "Teton Idaho"
+            assert heading2 == "Chamber of Commerce"
+        except Exception as e:
+            self.take_screenshot("test_1cwebsiteheading")
+            raise e
 
     def test_2btwospotlights(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
-        spotlight1 = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section[5]/div[1]")))
-        spotlight2 = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section[5]/div[2]")))
-        assert len(spotlight1) > 0
-        assert len(spotlight2) > 0
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
+            spotlight1 = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section[5]/div[1]")))
+            spotlight2 = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section[5]/div[2]")))
+            assert len(spotlight1) > 0
+            assert len(spotlight2) > 0
+        except Exception as e:
+            self.take_screenshot("test_2btwospotlights")
+            raise e
 
     def test_2cJoinUslink(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
-        elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
-        assert len(elements) > 0
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
+            elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
+            assert len(elements) > 0
+        except Exception as e:
+            self.take_screenshot("test_2cJoinUslink")
+            raise e
 
     def test_2dJoinUslink(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
-        self.wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "Join"))).click()
-        self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
-        assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/cse270-teton/teton/1.6/join.html")
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
+            self.wait.until(EC.element_to_be_clickable((By.LINK_TEXT, "Join"))).click()
+            self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
+            assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/cse270-teton/teton/1.6/join.html")
+        except Exception as e:
+            self.take_screenshot("test_2dJoinUslink")
+            raise e
 
     def test_3aGrid(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
-        self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-grid\"]"))).click()
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
+            self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-grid\"]"))).click()
+        except Exception as e:
+            self.take_screenshot("test_3aGrid")
+            raise e
 
     def test_3bTetonTurfandTree(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
-        self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-grid\"]"))).click()
-        text = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/div[2]/section[9]/p[1]"))).text
-        assert text == "Teton Turf and Tree"
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
+            self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-grid\"]"))).click()
+            text = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/div[2]/section[9]/p[1]"))).text
+            assert text == "Teton Turf and Tree"
+        except Exception as e:
+            self.take_screenshot("test_3bTetonTurfandTree")
+            raise e
 
     def test_3cListbutton(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
-        self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-list\"]"))).click()
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
+            self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-list\"]"))).click()
+        except Exception as e:
+            self.take_screenshot("test_3cListbutton")
+            raise e
 
     def test_3dTetonTurfandTreeList(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
-        self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-list\"]"))).click()
-        text = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/div[2]/section[9]/p[1]"))).text
-        assert text == "Teton Turf and Tree"
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/directory.html")
+            self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id=\"directory-list\"]"))).click()
+            text = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/div[2]/section[9]/p[1]"))).text
+            assert text == "Teton Turf and Tree"
+        except Exception as e:
+            self.take_screenshot("test_3dTetonTurfandTreeList")
+            raise e
 
     def test_4aFirstName(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/join.html")
-        elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section/form/fieldset/label[1]/input")))
-        assert len(elements) > 0
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/join.html")
+            elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section/form/fieldset/label[1]/input")))
+            assert len(elements) > 0
+        except Exception as e:
+            self.take_screenshot("test_4aFirstName")
+            raise e
 
     def test_4bcdFillinSubmitCheckEmail(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/join.html")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/section/form/fieldset/label[1]/input"))).send_keys("Ella")
-        self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/section/form/fieldset/label[2]/input"))).send_keys("Galbraith")
-        self.wait.until(EC.presence_of_element_located((By.NAME, "bizname"))).send_keys("Business Name")
-        self.wait.until(EC.presence_of_element_located((By.NAME, "biztitle"))).send_keys("Biz Title lol")
-        self.wait.until(EC.element_to_be_clickable((By.NAME, "submit"))).click()
-        elements = self.wait.until(EC.presence_of_all_elements_located((By.NAME, "email")))
-        assert len(elements) > 0
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/join.html")
+            self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/section/form/fieldset/label[1]/input"))).send_keys("Ella")
+            self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/main/section/form/fieldset/label[2]/input"))).send_keys("Galbraith")
+            self.wait.until(EC.presence_of_element_located((By.NAME, "bizname"))).send_keys("Business Name")
+            self.wait.until(EC.presence_of_element_located((By.NAME, "biztitle"))).send_keys("Biz Title lol")
+            self.wait.until(EC.element_to_be_clickable((By.NAME, "submit"))).click()
+            elements = self.wait.until(EC.presence_of_all_elements_located((By.NAME, "email")))
+            assert len(elements) > 0
+        except Exception as e:
+            self.take_screenshot("test_4bcdFillinSubmitCheckEmail")
+            raise e
 
     def test_5IncorrectLogin(self):
-        self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/admin.html")
-        elements = self.wait.until(EC.presence_of_all_elements_located((By.NAME, "username")))
-        assert len(elements) > 0
-        self.wait.until(EC.presence_of_element_located((By.NAME, "username"))).send_keys("incorrect")
-        self.wait.until(EC.presence_of_element_located((By.NAME, "password"))).send_keys("password")
-        self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div/main/section[1]/form/fieldset/input"))).click()
-        elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section[1]/form/div/span")))
-        assert len(elements) > 0
+        try:
+            self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/admin.html")
+            elements = self.wait.until(EC.presence_of_all_elements_located((By.NAME, "username")))
+            assert len(elements) > 0
+            self.wait.until(EC.presence_of_element_located((By.NAME, "username"))).send_keys("incorrect")
+            self.wait.until(EC.presence_of_element_located((By.NAME, "password"))).send_keys("password")
+            self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div/main/section[1]/form/fieldset/input"))).click()
+            elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/main/section[1]/form/div/span")))
+            assert len(elements) > 0
+        except Exception as e:
+            self.take_screenshot("test_5IncorrectLogin")
+            raise e
