@@ -35,7 +35,7 @@ class TestDefaultSuite():
     def test_1aSiteLogo(self):
         try:
             self.driver.get("http://127.0.0.1:5500/cse270-teton/teton/1.6/index.html")
-            elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/div[1]/div[1]/a/img")))
+            elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "//*[@id='content']/header/div[1]/div[1]/a/img")))
             assert len(elements) > 0
         except Exception as e:
             self.take_screenshot("test_1aSiteLogo")
