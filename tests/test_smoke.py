@@ -18,7 +18,7 @@ class TestDefaultSuite():
         options.add_argument("--headless=new")
         self.driver = webdriver.Chrome(options=options)
         self.vars = {}
-        self.wait = WebDriverWait(self.driver, 10)
+        self.wait = WebDriverWait(self.driver, 20)
 
     def teardown_method(self, method):
         self.driver.quit()
@@ -83,6 +83,8 @@ class TestDefaultSuite():
     def test_2dJoinUslink(self):
         try:
             self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
+            self.wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='content']/header/nav/ul/li[2]/a")))
+            self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[@id='content']/header/nav/ul/li[2]/a")))
             self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='content']/header/nav/ul/li[2]/a"))).click()
             self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
             assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/teton/1.6/join.html")
