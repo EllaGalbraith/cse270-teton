@@ -73,11 +73,12 @@ class TestDefaultSuite():
 
     def test_2cJoinUslink(self):
         self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
+        self.driver.set_window_size(1920, 1080)
 
         self.wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
 
         self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
-        self.wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
+        self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a"))).click()
 
         try:
             self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a"))).click()
