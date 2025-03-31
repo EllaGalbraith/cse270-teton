@@ -84,7 +84,7 @@ class TestDefaultSuite():
         self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
         elements = self.driver.find_elements(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")
         assert len(elements) > 0
-        self.driver.find_element(By.LINK_TEXT, "Join").click()
+        self.driver.find_element(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a").click()
         self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
         assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/teton/1.6/join.html")
 
