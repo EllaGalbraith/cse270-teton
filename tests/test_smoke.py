@@ -71,26 +71,22 @@ class TestDefaultSuite():
             self.take_screenshot("test_2btwospotlights")
             raise e
 
-    def test_2cJoinUslink(self):
-        try:
-            self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
-            elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
-            assert len(elements) > 0
-        except Exception as e:
-            self.take_screenshot("test_2cJoinUslink")
-            raise e
+    # def test_2cJoinUslink(self):
+    #     try:
+    #         self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
+    #         elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
+    #         assert len(elements) > 0
+    #     except Exception as e:
+    #         self.take_screenshot("test_2cJoinUslink")
+    #         raise e
 
-    def test_2dJoinUslink(self):
-        try:
-            self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
-            self.wait.until(EC.presence_of_element_located((By.XPATH, "//*[@id='content']/header/nav/ul/li[2]/a")))
-            self.wait.until(EC.visibility_of_element_located((By.XPATH, "//*[@id='content']/header/nav/ul/li[2]/a")))
-            self.wait.until(EC.element_to_be_clickable((By.XPATH, "//*[@id='content']/header/nav/ul/li[2]/a"))).click()
-            self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
-            assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/teton/1.6/join.html")
-        except Exception as e:
-            self.take_screenshot("test_2dJoinUslink")
-            raise e
+    def test_2cJoinUslink(self):
+        self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
+        elements = self.driver.find_elements(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")
+        assert len(elements) > 0
+        self.driver.find_element(By.LINK_TEXT, "Join").click()
+        self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
+        assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/teton/1.6/join.html")
 
     def test_3aGrid(self):
         try:
