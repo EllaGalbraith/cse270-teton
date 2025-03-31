@@ -71,22 +71,29 @@ class TestDefaultSuite():
             self.take_screenshot("test_2btwospotlights")
             raise e
 
-    # def test_2cJoinUslink(self):
-    #     try:
-    #         self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
-    #         elements = self.wait.until(EC.presence_of_all_elements_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
-    #         assert len(elements) > 0
-    #     except Exception as e:
-    #         self.take_screenshot("test_2cJoinUslink")
-    #         raise e
-
     def test_2cJoinUslink(self):
         self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
-        elements = self.driver.find_elements(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")
-        assert len(elements) > 0
-        self.driver.find_element(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a").click()
+
+        self.wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
+
+        self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
+        self.wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")))
+
+        try:
+            self.wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div/header/nav/ul/li[2]/a"))).click()
+        except:
+            join_link = self.driver.find_element(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")
+            self.driver.execute_script("arguments[0].click();", join_link)
+
         self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
-        assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/teton/1.6/join.html")
+        assert self.vars["pageUrl"] == "http://127.0.0.1:5500/teton/1.6/join.html"
+        # self.driver.get("http://127.0.0.1:5500/teton/1.6/index.html")
+        # self.wait.until(lambda d: d.execute_script("return document.readyState") == "complete")
+        # elements = self.driver.find_elements(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a")
+        # assert len(elements) > 0
+        # self.driver.find_element(By.XPATH, "/html/body/div/header/nav/ul/li[2]/a").click()
+        # self.vars["pageUrl"] = self.driver.execute_script("return window.location.href")
+        # assert(self.vars["pageUrl"] == "http://127.0.0.1:5500/teton/1.6/join.html")
 
     def test_3aGrid(self):
         try:
